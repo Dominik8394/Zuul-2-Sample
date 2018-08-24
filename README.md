@@ -61,13 +61,15 @@ application.properties file
 You can run the Zuul application assuming you navigated to the root project.
 Zuul-Sample-Project just type in the following command
 
-        gradlew run
+       ## For windows leave out the './' in order to execute the command
+       ./gradlew run
         
 
 ## Start Users-/Images-/Comments-service
 
 Navigate to the respective services' root folder and type 
 
-        gradlew bootRun
+        ## For windows leave out the './' in order to execute the command
+        ./gradlew bootRun
         
  
