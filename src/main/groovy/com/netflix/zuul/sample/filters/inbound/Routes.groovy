@@ -44,20 +44,24 @@ class Routes extends HttpInboundSyncFilter {
     @Override
     HttpRequestMessage apply(HttpRequestMessage request) {
         SessionContext context = request.getContext()
-        context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
-        context.setRouteVIP("api")
+//        context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+//        context.setRouteVIP("api")
 
-//        String path = request.getPath()
-//        String host = request.getOriginalHost()
-//
-//        // Route healthchecks to the healthcheck endpoint.;
-//        if (path.equalsIgnoreCase("/healthcheck")) {
-//            context.setEndpoint(Healthcheck.class.getCanonicalName())
-//
-//        } else {
-//            context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
-//            context.setRouteVIP("api")
-//        }
+        String path = request.getPath()
+       // String host = request.getOriginalHost()
+
+        // Route healthchecks to the healthcheck endpoint.;
+        if (path.equalsIgnoreCase("/healthcheck")) {
+            context.setEndpoint(Healthcheck.class.getCanonicalName())
+        }
+
+        if (path.equalsIgnoreCase("/user")) {
+            context.setEndpoint(User.class.getCanonicalName())
+
+        } else {
+            context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+            context.setRouteVIP("api")
+        }
 
         return request
     }

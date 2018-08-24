@@ -1,6 +1,5 @@
 package com.netflix.zuul.sample.filters.inbound
 
-import com.netflix.zuul.context.SessionContext
 import com.netflix.zuul.filters.http.HttpInboundSyncFilter
 import com.netflix.zuul.message.Headers
 import com.netflix.zuul.message.http.HttpRequestMessage
@@ -12,24 +11,31 @@ class CookieFilter extends HttpInboundSyncFilter{
     @Override
     HttpRequestMessage apply(HttpRequestMessage requestMessage) {
 
-        HttpResponseMessage responseMessage
-        SessionContext context = responseMessage.getContext()
+        Headers headers = requestMessage.getHeaders()
+
+
+        // responseMessage.setStatus(400)
+        //SessionContext context = responseMessage.getContext()
 
         // read out all headers of incoming request
-        Headers headers = requestMessage.getHeaders()
 
         // read out customer-id from cookie
         Cookie cookie = requestMessage.parseCookies().get("customer-id").get(0)
 
-        responseMessage.setStatus(400)
-
         System.out.println(responseMessage.getHeaders())
 
-        /*if(!(headers.contains("Cookie"))) {
-            responseMessage.setStatus(400)
+        /**
+         * Request returns an empty response as soon as the subsequent code is
+         * integrated. I have no idea why..
+         */
+        if(!(headers.contains("Cookie"))) {
+            System.out.println("There is no cookie in the request")
+            HttpResponseMessage responseMessage = HttpResponseMessageImpl(requestMessage.getContext(),
+                    requestMessage, 400)
+            responseMessage.setBodyAsText("Please pass a cookie within the request")
         } else {
             System.out.println(cookie)
-        }*/
+        }
 
         return requestMessage
     }
