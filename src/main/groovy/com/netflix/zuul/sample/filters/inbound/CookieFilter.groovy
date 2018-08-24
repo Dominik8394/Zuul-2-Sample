@@ -17,25 +17,23 @@ class CookieFilter extends HttpInboundSyncFilter{
         // responseMessage.setStatus(400)
         //SessionContext context = responseMessage.getContext()
 
-        // read out all headers of incoming request
-
         // read out customer-id from cookie
         Cookie cookie = requestMessage.parseCookies().get("customer-id").get(0)
-
-        System.out.println(responseMessage.getHeaders())
 
         /**
          * Request returns an empty response as soon as the subsequent code is
          * integrated. I have no idea why..
          */
-        if(!(headers.contains("Cookie"))) {
+       /* if(!(headers.contains("Cookie"))) {
             System.out.println("There is no cookie in the request")
             HttpResponseMessage responseMessage = HttpResponseMessageImpl(requestMessage.getContext(),
                     requestMessage, 400)
             responseMessage.setBodyAsText("Please pass a cookie within the request")
         } else {
             System.out.println(cookie)
-        }
+        }*/
+
+        System.out.println(headers)
 
         return requestMessage
     }

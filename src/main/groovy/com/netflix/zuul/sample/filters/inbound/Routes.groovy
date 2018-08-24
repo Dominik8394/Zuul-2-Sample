@@ -50,8 +50,20 @@ class Routes extends HttpInboundSyncFilter {
         String path = request.getPath()
        // String host = request.getOriginalHost()
 
+        switch(path) {
+            case "/healthcheck":
+                context.setEndpoint(Healthcheck.class.getCanonicalName())
+                break
+            case "/user":
+                context.setEndpoint(User.class.getCanonicalName())
+                break
+            default:
+                context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+                context.setRouteVIP("api")
+        }
+
         // Route healthchecks to the healthcheck endpoint.;
-        if (path.equalsIgnoreCase("/healthcheck")) {
+        /*if (path.equalsIgnoreCase("/healthcheck")) {
             context.setEndpoint(Healthcheck.class.getCanonicalName())
         }
 
@@ -61,7 +73,7 @@ class Routes extends HttpInboundSyncFilter {
         } else {
             context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
             context.setRouteVIP("api")
-        }
+        }*/
 
         return request
     }
