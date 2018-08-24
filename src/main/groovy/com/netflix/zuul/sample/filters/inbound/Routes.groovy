@@ -20,8 +20,6 @@ import com.netflix.zuul.context.SessionContext
 import com.netflix.zuul.filters.http.HttpInboundSyncFilter
 import com.netflix.zuul.message.http.HttpRequestMessage
 import com.netflix.zuul.netty.filter.ZuulEndPointRunner
-import com.netflix.zuul.sample.filters.endpoint.Healthcheck
-import com.netflix.zuul.sample.filters.endpoint.User
 
 /**
  * Routes configuration
@@ -44,37 +42,23 @@ class Routes extends HttpInboundSyncFilter {
     @Override
     HttpRequestMessage apply(HttpRequestMessage request) {
         SessionContext context = request.getContext()
-//        context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
-//        context.setRouteVIP("api")
-
-        String path = request.getPath()
-       // String host = request.getOriginalHost()
-
-        switch(path) {
-            case "/healthcheck":
-                context.setEndpoint(Healthcheck.class.getCanonicalName())
+        switch(request.getPath()) {
+            case "/images":
+                context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+                context.setRouteVIP("images")
                 break
-            case "/user":
-                context.setEndpoint(User.class.getCanonicalName())
+            case "/comments":
+                context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+                context.setRouteVIP("comments")
+                break
+            case "/users":
+                context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
+                context.setRouteVIP("users")
                 break
             default:
                 context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
                 context.setRouteVIP("api")
         }
-
-        // Route healthchecks to the healthcheck endpoint.;
-        /*if (path.equalsIgnoreCase("/healthcheck")) {
-            context.setEndpoint(Healthcheck.class.getCanonicalName())
-        }
-
-        if (path.equalsIgnoreCase("/user")) {
-            context.setEndpoint(User.class.getCanonicalName())
-
-        } else {
-            context.setEndpoint(ZuulEndPointRunner.PROXY_ENDPOINT_FILTER_NAME)
-            context.setRouteVIP("api")
-        }*/
-
         return request
     }
 }
